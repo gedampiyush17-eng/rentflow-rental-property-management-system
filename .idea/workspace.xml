@@ -5,10 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e4ccca63-2604-4acc-aedf-097a5ad5e84e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/RentFlow_Phase1_Roadmap.pptx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/BackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/BackendApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/common/entity/BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/common/entity/BaseEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/property/controller/PropertyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/property/controller/PropertyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/property/dto/request/PropertyCreateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/property/dto/request/PropertyCreateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/property/dto/request/PropertyUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/property/dto/request/PropertyUpdateRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/property/repository/PropertyRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/property/repository/PropertyRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/property/service/PropertyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/rentflow/property/service/PropertyService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,67 +33,67 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="1.5988305561198973E-264" />
+      <entry key="S2" value="1.1244784390906279E-66" />
+      <entry key="S5" value="4.1993774490347045E-27" />
+      <entry key="S10" value="7.394724873366974E-14" />
+      <entry key="S30" value="9.220045664889688E-5" />
+      <entry key="S60" value="0.02300986155488987" />
+      <entry key="M2" value="0.5347918322053601" />
+      <entry key="M5" value="5.310445880768735" />
+      <entry key="M10" value="16.037064534286607" />
+      <entry key="M15" value="28.365794585311445" />
+      <entry key="M30" value="63.60687771663798" />
+      <entry key="H1" value="112.91290913719457" />
+      <entry key="H2" value="169.73299534316516" />
+      <entry key="H4" value="224.54878095185424" />
+      <entry key="D1" value="303.21750503868935" />
+      <entry key="W1" value="321.72778554768894" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="7.385305111254784E-269" />
+      <entry key="S2" value="9.270264177439142E-68" />
+      <entry key="S5" value="1.5375768947786871E-27" />
+      <entry key="S10" value="3.921194836757267E-14" />
+      <entry key="S30" value="3.3978415523695535E-5" />
+      <entry key="S60" value="0.005928339692360123" />
+      <entry key="M2" value="0.0906692045018304" />
+      <entry key="M5" value="0.8499293961426331" />
+      <entry key="M10" value="4.278255988889212" />
+      <entry key="M15" value="9.523341261391105" />
+      <entry key="M30" value="25.411067167903706" />
+      <entry key="H1" value="46.75209197704725" />
+      <entry key="H2" value="69.3285045209082" />
+      <entry key="H4" value="89.29668953070096" />
+      <entry key="D1" value="115.91986936179853" />
+      <entry key="W1" value="121.94288583050614" />
+    </decayedSelected>
+    <decayedShown>
       <entry key="MS100" value="1.0" />
       <entry key="MS500" value="1.0" />
       <entry key="S2" value="1.0" />
       <entry key="S5" value="1.0" />
-      <entry key="S10" value="1.0" />
-      <entry key="S30" value="1.0000124801429737" />
-      <entry key="S60" value="1.0115288851883426" />
-      <entry key="M2" value="1.4048158696480786" />
-      <entry key="M5" value="5.966098725516928" />
-      <entry key="M10" value="14.925977594925342" />
-      <entry key="M15" value="21.859832711524554" />
-      <entry key="M30" value="36.68815181095044" />
-      <entry key="H1" value="57.89821164481901" />
-      <entry key="H2" value="88.1508178326797" />
-      <entry key="H4" value="120.22857101130944" />
-      <entry key="D1" value="166.44028202192845" />
-      <entry key="W1" value="177.12138176605532" />
-    </decayedCancelled>
-    <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="5.0623127064852254E-89" />
-      <entry key="S5" value="6.305090198736662E-36" />
-      <entry key="S10" value="3.573299857161469E-18" />
-      <entry key="S30" value="3.605643504559689E-6" />
-      <entry key="S60" value="0.004695126448708655" />
-      <entry key="M2" value="0.1940928114694752" />
-      <entry key="M5" value="2.281803997973523" />
-      <entry key="M10" value="5.920343923940298" />
-      <entry key="M15" value="8.44641704387155" />
-      <entry key="M30" value="13.288312902398895" />
-      <entry key="H1" value="20.224329718129702" />
-      <entry key="H2" value="29.952473686992036" />
-      <entry key="H4" value="39.79406858359276" />
-      <entry key="D1" value="53.389420917333695" />
-      <entry key="W1" value="56.461843904102416" />
-    </decayedSelected>
-    <decayedShown>
-      <entry key="MS100" value="0.03820750867787713" />
-      <entry key="MS500" value="0.5205107988420558" />
-      <entry key="S2" value="0.8493905717812119" />
-      <entry key="S5" value="0.9367915709830831" />
-      <entry key="S10" value="0.9678799362436867" />
-      <entry key="S30" value="0.9891913570071156" />
-      <entry key="S60" value="1.0100847095603522" />
-      <entry key="M2" value="1.582655723206782" />
-      <entry key="M5" value="8.183696429951565" />
-      <entry key="M10" value="20.762624753057985" />
-      <entry key="M15" value="30.226218639218924" />
-      <entry key="M30" value="49.91438493503512" />
-      <entry key="H1" value="78.07870112392145" />
-      <entry key="H2" value="118.07369150336758" />
-      <entry key="H4" value="160.00414428304083" />
-      <entry key="D1" value="219.82578215407275" />
-      <entry key="W1" value="233.58263858659188" />
+      <entry key="S10" value="1.0000000000000893" />
+      <entry key="S30" value="1.0001184064928068" />
+      <entry key="S60" value="1.0281384773767999" />
+      <entry key="M2" value="1.6179019491555695" />
+      <entry key="M5" value="7.133410927039702" />
+      <entry key="M10" value="21.26775783043296" />
+      <entry key="M15" value="38.82538615996208" />
+      <entry key="M30" value="89.93508889966525" />
+      <entry key="H1" value="160.5874259965455" />
+      <entry key="H2" value="240.0036747440363" />
+      <entry key="H4" value="314.8083789086122" />
+      <entry key="D1" value="420.12942151912415" />
+      <entry key="W1" value="444.6694787547689" />
     </decayedShown>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3GlhsRKQGaYQO0VdmpPX0dL1H3V" />
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="1" id="Add" />
@@ -97,37 +102,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.BackendApplication (1).executor": "Run",
-    "Spring Boot.BackendApplication.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Projects/rentflow-rental-property-management-system/backend/src/main/java/com/rentflow/Main.java",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.customizations",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.BackendApplication (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.BackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Projects/rentflow-rental-property-management-system/backend/src/main/java/com/rentflow/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.customizations&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="BackendApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
@@ -154,6 +159,7 @@
       <option name="presentableId" value="Default" />
       <updated>1784552268431</updated>
       <workItem from="1784552269787" duration="14701000" />
+      <workItem from="1784637400306" duration="5276000" />
     </task>
     <servers />
   </component>
