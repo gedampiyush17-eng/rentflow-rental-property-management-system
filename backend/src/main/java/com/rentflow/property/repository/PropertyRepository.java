@@ -8,6 +8,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface PropertyRepository extends JpaRepository<Property, UUID> {
+
     List<Property> findByActiveTrue();
+
     Optional<Property> findByIdAndActiveTrue(UUID id);
+
+    List<Property> findByOwnerIdAndActiveTrue(UUID ownerId);
+
+    Optional<Property> findByIdAndOwnerIdAndActiveTrue(UUID id, UUID ownerId);
 }

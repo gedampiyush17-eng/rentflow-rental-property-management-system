@@ -2,14 +2,13 @@ package com.rentflow.property.dto.request;
 
 import com.rentflow.property.enums.PropertyStatus;
 import com.rentflow.property.enums.PropertyType;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
 @Data
 public class PropertyUpdateRequest {
+
     @NotBlank(message = "Property name is required")
     private String propertyName;
 
@@ -18,7 +17,7 @@ public class PropertyUpdateRequest {
 
     private String description;
 
-    @NotBlank
+    @NotBlank(message = "Address is required")
     private String addressLine1;
 
     private String addressLine2;
@@ -35,12 +34,6 @@ public class PropertyUpdateRequest {
     @NotBlank(message = "Pincode is required")
     private String pincode;
 
-    @Min(value = 1, message = "Total units must be at least 1")
-    private Integer totalUnits;
-
-    @PositiveOrZero
-    private Integer occupiedUnits;
-
-    @NotNull
+    @NotNull(message = "Property status is required")
     private PropertyStatus status;
 }

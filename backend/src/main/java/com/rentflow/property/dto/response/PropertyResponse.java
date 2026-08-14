@@ -39,5 +39,4 @@ public class PropertyResponse {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
 }
