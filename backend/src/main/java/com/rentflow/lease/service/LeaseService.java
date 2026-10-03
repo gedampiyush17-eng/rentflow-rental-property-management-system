@@ -8,6 +8,7 @@ import com.rentflow.lease.entity.Lease;
 import com.rentflow.lease.enums.LeaseStatus;
 import com.rentflow.lease.mapper.LeaseMapper;
 import com.rentflow.lease.repository.LeaseRepository;
+import com.rentflow.rentcycle.service.RentCycleService;
 import com.rentflow.tenant.entity.Tenant;
 import com.rentflow.tenant.repository.TenantRepository;
 import com.rentflow.unit.entity.Unit;
@@ -30,6 +31,15 @@ public class LeaseService {
     private final LeaseMapper leaseMapper;
     private final TenantRepository tenantRepository;
     private final UnitRepository unitRepository;
+
+    /*
+     * Rent Cycle Service
+     *
+     * Used to automatically generate rent cycles
+     * when a new active lease is created.
+     */
+    private final RentCycleService rentCycleService;
+
 
     /*
      * CREATE LEASE
@@ -64,6 +74,7 @@ public class LeaseService {
                                                 + request.getUnitId()
                                 ));
 
+
         /*
          * A unit can have only one ACTIVE lease.
          */
@@ -77,6 +88,7 @@ public class LeaseService {
                     "Unit already has an active lease"
             );
         }
+
 
         /*
          * A tenant can have only one ACTIVE lease
@@ -95,6 +107,7 @@ public class LeaseService {
             );
         }
 
+
         /*
          * Unit must be vacant before a new lease starts.
          */
@@ -106,16 +119,24 @@ public class LeaseService {
             );
         }
 
+
+        /*
+         * Convert request into Lease entity.
+         */
         Lease lease =
                 leaseMapper.toEntity(request);
 
         lease.setTenant(tenant);
         lease.setUnit(unit);
 
+
         /*
          * Every newly created lease is ACTIVE.
          */
-        lease.setLeaseStatus(LeaseStatus.ACTIVE);
+        lease.setLeaseStatus(
+                LeaseStatus.ACTIVE
+        );
+
 
         /*
          * Lease activation makes the unit occupied.
@@ -126,11 +147,37 @@ public class LeaseService {
 
         unitRepository.save(unit);
 
+
+        /*
+         * Save the lease first.
+         *
+         * We need the generated lease ID before
+         * generating rent cycles.
+         */
         Lease savedLease =
                 leaseRepository.save(lease);
 
-        return leaseMapper.toResponse(savedLease);
+
+        /*
+         * Automatically generate rent cycles
+         * for the newly created active lease.
+         *
+         * This means the owner does NOT need to
+         * manually call the rent-cycle generation API.
+         */
+        rentCycleService.generateCycles(
+                savedLease.getId()
+        );
+
+
+        /*
+         * Return the created lease.
+         */
+        return leaseMapper.toResponse(
+                savedLease
+        );
     }
+
 
     /*
      * GET ALL ACTIVE RECORDS
@@ -145,11 +192,13 @@ public class LeaseService {
                 .toList();
     }
 
+
     /*
-     * GET BY ID
+     * GET LEASE BY ID
      */
     @Transactional(readOnly = true)
-    public LeaseResponse getLeaseById(UUID id) {
+    public LeaseResponse getLeaseById(
+            UUID id) {
 
         Lease lease =
                 leaseRepository
@@ -160,8 +209,11 @@ public class LeaseService {
                                                 + id
                                 ));
 
-        return leaseMapper.toResponse(lease);
+        return leaseMapper.toResponse(
+                lease
+        );
     }
+
 
     /*
      * UPDATE LEASE
@@ -179,10 +231,12 @@ public class LeaseService {
                                                 + id
                                 ));
 
+
         validateDates(
                 request.getLeaseStartDate(),
                 request.getLeaseEndDate()
         );
+
 
         Tenant tenant =
                 tenantRepository
@@ -195,6 +249,7 @@ public class LeaseService {
                                                 + request.getTenantId()
                                 ));
 
+
         Unit newUnit =
                 unitRepository
                         .findByIdAndActiveTrue(
@@ -206,29 +261,10 @@ public class LeaseService {
                                                 + request.getUnitId()
                                 ));
 
-        /*
-         * If changing tenant, make sure the new tenant
-         * doesn't already have another active lease.
-         */
-        if (!lease.getTenant()
-                .getId()
-                .equals(tenant.getId())) {
-
-            if (leaseRepository
-                    .existsByTenantIdAndLeaseStatus(
-                            tenant.getId(),
-                            LeaseStatus.ACTIVE
-                    )) {
-
-                throw new IllegalStateException(
-                        "Tenant already has an active lease"
-                );
-            }
-        }
 
         /*
-         * If changing unit, make sure the new unit
-         * doesn't already have another active lease.
+         * If the unit is being changed,
+         * validate the new unit.
          */
         if (!lease.getUnit()
                 .getId()
@@ -245,6 +281,7 @@ public class LeaseService {
                 );
             }
 
+
             if (newUnit.getOccupancyStatus()
                     == OccupancyStatus.OCCUPIED) {
 
@@ -253,16 +290,19 @@ public class LeaseService {
                 );
             }
 
+
             /*
              * Old unit becomes vacant.
              */
-            Unit oldUnit = lease.getUnit();
+            Unit oldUnit =
+                    lease.getUnit();
 
             oldUnit.setOccupancyStatus(
                     OccupancyStatus.VACANT
             );
 
             unitRepository.save(oldUnit);
+
 
             /*
              * New unit becomes occupied.
@@ -274,21 +314,37 @@ public class LeaseService {
             unitRepository.save(newUnit);
         }
 
-        leaseMapper.updateEntity(request, lease);
+
+        /*
+         * Update lease fields.
+         */
+        leaseMapper.updateEntity(
+                request,
+                lease
+        );
 
         lease.setTenant(tenant);
         lease.setUnit(newUnit);
 
+
+        /*
+         * Save updated lease.
+         */
         Lease updatedLease =
                 leaseRepository.save(lease);
 
-        return leaseMapper.toResponse(updatedLease);
+
+        return leaseMapper.toResponse(
+                updatedLease
+        );
     }
+
 
     /*
      * TERMINATE LEASE
      */
-    public LeaseResponse terminateLease(UUID id) {
+    public LeaseResponse terminateLease(
+            UUID id) {
 
         Lease lease =
                 leaseRepository
@@ -298,6 +354,7 @@ public class LeaseService {
                                         "Lease not found with id: "
                                                 + id
                                 ));
+
 
         if (lease.getLeaseStatus()
                 != LeaseStatus.ACTIVE) {
@@ -307,14 +364,17 @@ public class LeaseService {
             );
         }
 
+
         lease.setLeaseStatus(
                 LeaseStatus.TERMINATED
         );
 
+
         /*
          * The unit becomes vacant.
          */
-        Unit unit = lease.getUnit();
+        Unit unit =
+                lease.getUnit();
 
         unit.setOccupancyStatus(
                 OccupancyStatus.VACANT
@@ -322,20 +382,24 @@ public class LeaseService {
 
         unitRepository.save(unit);
 
+
         Lease terminatedLease =
                 leaseRepository.save(lease);
+
 
         return leaseMapper.toResponse(
                 terminatedLease
         );
     }
 
+
     /*
      * EXPIRE LEASE
      *
      * This can later be called by a scheduler.
      */
-    public LeaseResponse expireLease(UUID id) {
+    public LeaseResponse expireLease(
+            UUID id) {
 
         Lease lease =
                 leaseRepository
@@ -345,6 +409,7 @@ public class LeaseService {
                                         "Lease not found with id: "
                                                 + id
                                 ));
+
 
         if (lease.getLeaseStatus()
                 != LeaseStatus.ACTIVE) {
@@ -354,11 +419,17 @@ public class LeaseService {
             );
         }
 
+
         lease.setLeaseStatus(
                 LeaseStatus.EXPIRED
         );
 
-        Unit unit = lease.getUnit();
+
+        /*
+         * Unit becomes vacant.
+         */
+        Unit unit =
+                lease.getUnit();
 
         unit.setOccupancyStatus(
                 OccupancyStatus.VACANT
@@ -366,20 +437,25 @@ public class LeaseService {
 
         unitRepository.save(unit);
 
+
         Lease expiredLease =
                 leaseRepository.save(lease);
+
 
         return leaseMapper.toResponse(
                 expiredLease
         );
     }
 
+
     /*
      * SOFT DELETE
      *
-     * Historical lease records remain in the database.
+     * Historical lease records remain
+     * in the database.
      */
-    public void deleteLease(UUID id) {
+    public void deleteLease(
+            UUID id) {
 
         Lease lease =
                 leaseRepository
@@ -389,6 +465,7 @@ public class LeaseService {
                                         "Lease not found with id: "
                                                 + id
                                 ));
+
 
         if (lease.getLeaseStatus()
                 == LeaseStatus.ACTIVE) {
@@ -399,10 +476,12 @@ public class LeaseService {
             );
         }
 
+
         lease.setActive(false);
 
         leaseRepository.save(lease);
     }
+
 
     /*
      * DATE VALIDATION
@@ -411,11 +490,19 @@ public class LeaseService {
             LocalDate startDate,
             LocalDate endDate) {
 
-        if (!endDate.isAfter(startDate)) {
+        if (startDate == null ||
+                endDate == null) {
 
             throw new IllegalArgumentException(
-                    "Lease end date must be after "
-                            + "lease start date"
+                    "Lease start date and end date are required"
+            );
+        }
+
+
+        if (endDate.isBefore(startDate)) {
+
+            throw new IllegalArgumentException(
+                    "Lease end date cannot be before start date"
             );
         }
     }

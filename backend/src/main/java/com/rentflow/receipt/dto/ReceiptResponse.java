@@ -28,9 +28,9 @@ public class ReceiptResponse {
 
     private UUID rentCycleId;
 
-    private Integer periodMonth;
+    private LocalDate periodStart;
 
-    private Integer periodYear;
+    private LocalDate periodEnd;
 
     private UUID tenantId;
 

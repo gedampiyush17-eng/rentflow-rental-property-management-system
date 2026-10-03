@@ -1,0 +1,279 @@
+.tenant-page {
+  min-height: 100vh;
+  background: #f5f8fc;
+  padding: 35px 50px;
+  font-family: Arial, sans-serif;
+  color: #16213e;
+}
+
+/* ================= HEADER ================= */
+
+.tenant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.tenant-header h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  color: #16213e;
+}
+
+.tenant-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 15px;
+}
+
+/* ================= LOGOUT ================= */
+
+.logout-btn {
+  width: auto;
+  padding: 11px 22px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #ef4444;
+  color: white;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+}
+
+/* ================= SECTION ================= */
+
+.section-title {
+  margin: 0 0 16px;
+
+  color: #16213e;
+
+  font-size: 23px;
+  font-weight: 700;
+}
+
+/* ================= STATS ================= */
+
+.stats {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 22px;
+
+  margin-bottom: 38px;
+}
+
+.stat-card {
+  background: #ffffff;
+
+  padding: 25px;
+
+  border-radius: 14px;
+
+  border: 1px solid #edf0f4;
+
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+
+  transition: 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+
+  box-shadow: 0 9px 25px rgba(15, 23, 42, 0.09);
+}
+
+.stat-card h3 {
+  margin: 0 0 12px;
+
+  color: #64748b;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.stat-card p {
+  margin: 0;
+
+  color: #16213e;
+
+  font-size: 30px;
+  font-weight: 700;
+}
+
+/* ================= RENT CARD ================= */
+
+.rent-card {
+  background: #ffffff;
+
+  padding: 28px;
+
+  border-radius: 14px;
+
+  border: 1px solid #edf0f4;
+
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+
+  margin-bottom: 28px;
+}
+
+/* ================= RENT INFORMATION ================= */
+
+.rent-info {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 25px;
+}
+
+.info-item span {
+  display: block;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  margin-bottom: 7px;
+}
+
+.info-item strong {
+  color: #16213e;
+
+  font-size: 18px;
+
+  font-weight: 600;
+}
+
+/* ================= STATUS ================= */
+
+.status {
+  display: inline-block;
+
+  padding: 6px 13px;
+
+  border-radius: 20px;
+
+  background: #fef3c7;
+
+  color: #92400e;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+/* ================= PAY BUTTON ================= */
+
+.pay-btn {
+  width: auto;
+
+  margin-top: 25px;
+
+  padding: 12px 25px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #2563eb;
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.pay-btn:hover {
+  background: #1d4ed8;
+}
+
+.pay-btn:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* ================= PAYMENT AREA ================= */
+
+.rent-card input {
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  color: #16213e;
+
+  outline: none;
+}
+
+.rent-card input:focus {
+  border-color: #2563eb !important;
+
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ================= QR AREA ================= */
+
+.rent-card img {
+  display: block;
+
+  margin: 0 auto;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+  .tenant-page {
+    padding: 30px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .rent-info {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .tenant-page {
+    padding: 22px 18px;
+  }
+
+  .tenant-header {
+    align-items: flex-start;
+
+    gap: 20px;
+  }
+
+  .tenant-header h1 {
+    font-size: 26px;
+  }
+
+  .stat-card {
+    padding: 21px;
+  }
+
+  .rent-card {
+    padding: 21px;
+  }
+}

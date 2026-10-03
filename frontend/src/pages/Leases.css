@@ -1,0 +1,652 @@
+/* =========================
+   PAGE
+========================= */
+
+.leases-page {
+  padding: 32px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.leases-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.leases-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #172033;
+}
+
+.leases-header p {
+  margin: 7px 0 0;
+  color: #718096;
+  font-size: 14px;
+}
+
+
+/* =========================
+   LOADING
+========================= */
+
+.leases-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  color: #718096;
+  font-size: 15px;
+}
+
+
+/* =========================
+   ERROR
+========================= */
+
+.leases-error {
+  background: #fff5f5;
+  color: #c53030;
+  border: 1px solid #fed7d7;
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 22px;
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+.leases-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.lease-stat-card {
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 2px 8px rgba(20, 40, 80, 0.04);
+}
+
+.lease-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  background: #eef5ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.lease-stat-icon.active {
+  background: #ecfdf3;
+  color: #15803d;
+}
+
+.lease-stat-icon.occupied {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.lease-stat-card span {
+  display: block;
+  color: #718096;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.lease-stat-card strong {
+  display: block;
+  color: #172033;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.leases-card {
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(20, 40, 80, 0.04);
+  overflow: hidden;
+}
+
+
+/* =========================
+   CARD HEADER
+========================= */
+
+.leases-card-header {
+  padding: 22px 24px;
+  border-bottom: 1px solid #edf1f7;
+}
+
+.leases-card-header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.leases-card-header p {
+  margin: 6px 0 0;
+  color: #718096;
+  font-size: 13px;
+}
+
+
+/* =========================
+   TABLE
+========================= */
+
+.leases-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.leases-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.leases-table th {
+  background: #f8fafc;
+  color: #718096;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 15px 20px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.leases-table td {
+  padding: 18px 20px;
+  border-top: 1px solid #edf1f7;
+  vertical-align: middle;
+}
+
+.leases-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.leases-table tbody tr:hover {
+  background: #f8fbff;
+}
+
+
+/* =========================
+   LEASE ID
+========================= */
+
+.lease-id {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lease-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #eef5ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+}
+
+.lease-id strong {
+  display: block;
+  color: #1f2937;
+  font-size: 13px;
+}
+
+.lease-id span {
+  display: block;
+  color: #8a94a6;
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+
+/* =========================
+   TENANT
+========================= */
+
+.lease-tenant {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lease-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e8f0ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lease-tenant strong {
+  display: block;
+  color: #273142;
+  font-size: 13px;
+}
+
+.lease-tenant span {
+  display: block;
+  color: #8a94a6;
+  font-size: 10px;
+  margin-top: 3px;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+/* =========================
+   UNIT
+========================= */
+
+.unit-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  background: #f1f5f9;
+  border-radius: 7px;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+
+/* =========================
+   RENT
+========================= */
+
+.lease-rent {
+  color: #172033;
+  font-size: 14px;
+}
+
+
+/* =========================
+   PERIOD
+========================= */
+
+.lease-period {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+.lease-period span {
+  color: #4a5568;
+  font-size: 12px;
+}
+
+.period-arrow {
+  color: #9aa4b2 !important;
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.lease-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.lease-status.active {
+  background: #ecfdf3;
+  color: #15803d;
+}
+
+.lease-status.expired {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.lease-status.terminated {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.leases-empty {
+  text-align: center;
+  padding: 70px 20px;
+}
+
+.leases-empty-icon {
+  width: 55px;
+  height: 55px;
+  margin: 0 auto 15px;
+  border-radius: 14px;
+  background: #eef5ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.leases-empty h3 {
+  margin: 0;
+  color: #273142;
+  font-size: 17px;
+}
+
+.leases-empty p {
+  margin-top: 7px;
+  color: #8a94a6;
+  font-size: 13px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1000px) {
+
+  .leases-stats {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .leases-page {
+    padding: 20px;
+  }
+
+  .leases-header h1 {
+    font-size: 24px;
+  }
+
+  .leases-card {
+    border-radius: 12px;
+  }
+
+  .leases-table th,
+  .leases-table td {
+    padding: 14px;
+  }
+
+}
+
+/* =========================
+   CREATE LEASE FORM
+   ========================= */
+
+.create-lease-button {
+  padding: 11px 18px;
+  border: none;
+  border-radius: 7px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.create-lease-button:hover {
+  background: #1d4ed8;
+}
+
+.leases-error {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.leases-success {
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.lease-form-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.lease-form-header {
+  margin-bottom: 28px;
+}
+
+.lease-form-header h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+  color: #1f2937;
+}
+
+.lease-form-header p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.lease-form-section {
+  padding-bottom: 26px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.lease-form-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.lease-form-section h3 {
+  margin: 0 0 5px;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.lease-form-section > p {
+  margin: 0 0 20px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.lease-form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.lease-form-row:last-child {
+  margin-bottom: 0;
+}
+
+.lease-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.lease-form-group label {
+  margin-bottom: 8px;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lease-form-group label span {
+  color: #ef4444;
+}
+
+.lease-form-group input,
+.lease-form-group select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 13px;
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #1f2937;
+  font-size: 14px;
+  outline: none;
+}
+
+.lease-form-group input:focus,
+.lease-form-group select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.lease-form-group small {
+  margin-top: 6px;
+  color: #9ca3af;
+  font-size: 12px;
+}
+
+.lease-input-prefix {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lease-input-prefix span {
+  position: absolute;
+  left: 13px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.lease-input-prefix input {
+  padding-left: 30px;
+}
+
+.lease-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 24px;
+}
+
+.lease-cancel-button,
+.lease-save-button {
+  padding: 11px 22px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.lease-cancel-button {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.lease-cancel-button:hover {
+  background: #f9fafb;
+}
+
+.lease-save-button {
+  background: #2563eb;
+  border: 1px solid #2563eb;
+  color: #ffffff;
+}
+
+.lease-save-button:hover {
+  background: #1d4ed8;
+}
+
+.lease-save-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 768px) {
+
+  .lease-form-card {
+    padding: 20px;
+  }
+
+  .lease-form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .lease-form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .lease-cancel-button,
+  .lease-save-button {
+    width: 100%;
+  }
+
+}

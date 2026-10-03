@@ -1,0 +1,345 @@
+.tenants-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+
+  color: #17365d;
+}
+
+
+/* ================= HEADER ================= */
+
+.tenants-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 45px;
+}
+
+.tenants-header h1 {
+  margin: 0 0 8px;
+
+  font-size: 34px;
+  font-weight: 700;
+
+  color: #12345b;
+}
+
+.tenants-header p {
+  margin: 0;
+
+  font-size: 16px;
+
+  color: #7186a0;
+}
+
+
+/* ================= ADD BUTTON ================= */
+
+.add-tenant-btn {
+  padding: 13px 24px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #2867e8;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 4px 12px rgba(40, 103, 232, 0.18);
+
+  transition: 0.2s;
+}
+
+.add-tenant-btn:hover {
+  background: #1d56cf;
+  transform: translateY(-1px);
+}
+
+
+/* ================= SECTION ================= */
+
+.tenants-section h2 {
+  margin: 0 0 18px;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: #17365d;
+}
+
+
+/* ================= LIST ================= */
+
+.tenant-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+
+/* ================= CARD ================= */
+
+.tenant-card {
+  display: flex;
+  align-items: center;
+
+  min-height: 175px;
+
+  padding: 28px 30px;
+
+  background: white;
+
+  border: 1px solid #e5ebf2;
+
+  border-radius: 16px;
+
+  box-shadow: 0 7px 22px rgba(24, 55, 90, 0.07);
+
+  transition: 0.2s;
+}
+
+.tenant-card:hover {
+  box-shadow: 0 10px 28px rgba(24, 55, 90, 0.10);
+}
+
+
+/* ================= AVATAR ================= */
+
+.tenant-avatar {
+  width: 64px;
+  height: 64px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-right: 28px;
+
+  border-radius: 50%;
+
+  background: #eaf1ff;
+
+  color: #2867e8;
+
+  font-size: 25px;
+  font-weight: 700;
+}
+
+
+/* ================= MAIN ================= */
+
+.tenant-main {
+  flex: 1;
+}
+
+.tenant-main h3 {
+  margin: 0 0 5px;
+
+  font-size: 22px;
+  font-weight: 700;
+
+  color: #12345b;
+}
+
+.tenant-email {
+  margin: 0 0 20px;
+
+  font-size: 15px;
+
+  color: #6c829b;
+}
+
+
+/* ================= INFO ================= */
+
+.tenant-info-row {
+  display: flex;
+  gap: 65px;
+}
+
+.tenant-info-row div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.tenant-info-row span {
+  font-size: 11px;
+  font-weight: 600;
+
+  color: #8a9db2;
+  letter-spacing: 0.5px;
+}
+
+.tenant-info-row strong {
+  font-size: 14px;
+
+  color: #294867;
+}
+
+
+/* ================= RIGHT ================= */
+
+.tenant-card-right {
+  min-width: 210px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  gap: 24px;
+}
+
+
+/* STATUS */
+
+.tenant-status {
+  padding: 7px 15px;
+
+  border-radius: 20px;
+
+  background: #e7f8ee;
+
+  color: #15803d;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* VIEW BUTTON */
+
+.view-tenant-btn {
+  padding: 11px 20px;
+
+  border: 1px solid #b9d0f4;
+
+  border-radius: 8px;
+
+  background: white;
+
+  color: #2867e8;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.view-tenant-btn:hover {
+  background: #f2f6ff;
+}
+
+
+/* ================= EMPTY ================= */
+
+.empty-tenants {
+  padding: 50px;
+
+  text-align: center;
+
+  background: white;
+
+  border-radius: 16px;
+
+  border: 1px solid #e5ebf2;
+}
+
+.empty-tenants p {
+  color: #7186a0;
+}
+
+.empty-tenants button {
+  padding: 11px 20px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #2867e8;
+  color: white;
+
+  cursor: pointer;
+}
+
+
+/* ================= ERROR ================= */
+
+.tenant-error {
+  padding: 14px 18px;
+
+  margin-bottom: 20px;
+
+  border-radius: 9px;
+
+  background: #fff1f2;
+
+  color: #b42318;
+
+  border: 1px solid #ffd0d5;
+}
+
+
+/* ================= LOADING ================= */
+
+.loading-text {
+  color: #7186a0;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 850px) {
+
+  .tenants-header {
+    align-items: flex-start;
+
+    gap: 20px;
+  }
+
+  .tenant-card {
+    align-items: flex-start;
+  }
+
+  .tenant-info-row {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .tenant-card-right {
+    min-width: 150px;
+  }
+
+}
+
+@media (max-width: 650px) {
+
+  .tenants-header {
+    flex-direction: column;
+  }
+
+  .tenant-card {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .tenant-avatar {
+    margin-right: 0;
+  }
+
+  .tenant-card-right {
+    align-items: flex-start;
+  }
+
+}

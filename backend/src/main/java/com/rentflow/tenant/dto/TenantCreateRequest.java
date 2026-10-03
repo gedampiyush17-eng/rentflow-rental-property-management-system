@@ -1,12 +1,10 @@
-package com.rentflow.tenant.dto.request;
+package com.rentflow.tenant.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
 public class TenantCreateRequest {
@@ -20,6 +18,9 @@ public class TenantCreateRequest {
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email")
     private String email;
+
+    @NotBlank(message = "Password is required")
+    private String password;
 
     @NotBlank(message = "Phone number is required")
     private String phoneNumber;
@@ -35,7 +36,4 @@ public class TenantCreateRequest {
 
     @NotBlank(message = "Emergency contact phone is required")
     private String emergencyContactPhone;
-
-    @NotNull(message = "User ID is required")
-    private UUID userId;
 }

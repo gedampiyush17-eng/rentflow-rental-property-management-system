@@ -1,0 +1,211 @@
+.add-tenant-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  color: #17365d;
+}
+
+
+/* ================= HEADER ================= */
+
+.add-tenant-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.add-tenant-header h1 {
+  margin: 0 0 8px;
+  font-size: 34px;
+  font-weight: 700;
+  color: #12345b;
+}
+
+.add-tenant-header p {
+  margin: 0;
+  color: #7186a0;
+  font-size: 16px;
+}
+
+
+.back-btn {
+  padding: 11px 18px;
+  border: 1px solid #d7e2ef;
+  border-radius: 9px;
+  background: white;
+  color: #31577f;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background: #f4f7fb;
+}
+
+
+/* ================= MESSAGE ================= */
+
+.tenant-message {
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 22px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tenant-message.success {
+  background: #ecfdf3;
+  color: #087443;
+  border: 1px solid #c8efd9;
+}
+
+.tenant-message.error {
+  background: #fff1f2;
+  color: #b42318;
+  border: 1px solid #ffd0d5;
+}
+
+
+/* ================= CARD ================= */
+
+.add-tenant-card {
+  background: white;
+  border: 1px solid #e5ebf2;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 8px 25px rgba(24, 55, 90, 0.07);
+}
+
+
+/* ================= FORM ================= */
+
+.add-tenant-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 26px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #49647f;
+}
+
+.form-group input {
+  height: 46px;
+  padding: 0 14px;
+
+  border: 1px solid #d7e1ec;
+  border-radius: 9px;
+
+  background: #fbfcfe;
+
+  font-size: 15px;
+  color: #17365d;
+
+  outline: none;
+
+  transition: 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #2867e8;
+  background: white;
+
+  box-shadow:
+    0 0 0 3px rgba(40, 103, 232, 0.10);
+}
+
+.form-group input::placeholder {
+  color: #9aaabd;
+}
+
+
+/* ================= ACTIONS ================= */
+
+.add-tenant-actions {
+  grid-column: span 2;
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  padding-top: 25px;
+  margin-top: 5px;
+
+  border-top: 1px solid #edf1f5;
+}
+
+.cancel-btn {
+  padding: 12px 24px;
+
+  border: 1px solid #d5deea;
+  border-radius: 9px;
+
+  background: white;
+  color: #526b86;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background: #f4f7fa;
+}
+
+.save-tenant-btn {
+  padding: 12px 26px;
+
+  border: none;
+  border-radius: 9px;
+
+  background: #2867e8;
+  color: white;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.save-tenant-btn:hover {
+  background: #1d56cf;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 750px) {
+
+  .add-tenant-page {
+    padding: 25px 15px;
+  }
+
+  .add-tenant-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+  }
+
+  .add-tenant-form {
+    grid-template-columns: 1fr;
+  }
+
+  .add-tenant-actions {
+    grid-column: span 1;
+  }
+
+}

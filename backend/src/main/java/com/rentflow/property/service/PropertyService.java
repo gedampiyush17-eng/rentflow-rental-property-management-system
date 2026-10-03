@@ -1,5 +1,7 @@
 package com.rentflow.property.service;
 
+import com.rentflow.auth.entity.User;
+import com.rentflow.auth.repository.UserRepository;
 import com.rentflow.common.exception.ResourceNotFoundException;
 import com.rentflow.property.dto.request.PropertyCreateRequest;
 import com.rentflow.property.dto.request.PropertyUpdateRequest;
@@ -9,6 +11,8 @@ import com.rentflow.property.enums.PropertyStatus;
 import com.rentflow.property.mapper.PropertyMapper;
 import com.rentflow.property.repository.PropertyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,18 +24,31 @@ public class PropertyService {
 
     private final PropertyRepository propertyRepository;
     private final PropertyMapper propertyMapper;
+    private final UserRepository userRepository;
 
     public PropertyResponse createProperty(
             PropertyCreateRequest request) {
 
-        Property property = propertyMapper.toEntity(request);
+        Property property =
+                propertyMapper.toEntity(request);
 
         property.setStatus(PropertyStatus.ACTIVE);
 
-        /*
-         * Owner will be assigned from the authenticated user.
-         * We will add this after fixing the Auth/User module.
-         */
+        Authentication authentication =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication();
+
+        String email = authentication.getName();
+
+        User owner =
+                userRepository.findByEmail(email)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Owner not found"
+                                ));
+
+        property.setOwner(owner);
 
         Property savedProperty =
                 propertyRepository.save(property);
@@ -45,7 +62,10 @@ public class PropertyService {
 
         Property property =
                 propertyRepository.findByIdAndActiveTrue(id)
-                        .orElseThrow(() -> new ResourceNotFoundException("Property not found with id: " + id));
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Property not found with id: " + id
+                                ));
 
         propertyMapper.updateEntity(request, property);
 

@@ -1,4 +1,4 @@
-package com.rentflow.payment.dto.response;
+package com.rentflow.payment.dto;
 
 import com.rentflow.payment.enums.PaymentMethod;
 import com.rentflow.payment.enums.PaymentStatus;

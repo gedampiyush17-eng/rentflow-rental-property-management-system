@@ -30,7 +30,7 @@ public class RemainderService {
 
         LocalDateTime startOfDay=LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
 
-        LocalDateTime endOfDay=LocalDateTime.of(LocalDate.now(),LocalTime.MIN);
+        LocalDateTime endOfDay=LocalDateTime.of(LocalDate.now(),LocalTime.MAX);
 
         for(RentCycle rentCycle: rentCycles){
             if(rentCycle.getStatus()== RentCycleStatus.PAID){

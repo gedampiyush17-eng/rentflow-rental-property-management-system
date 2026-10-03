@@ -8,6 +8,10 @@ import com.rentflow.rentcycle.entity.RentCycle;
 import com.rentflow.rentcycle.enums.RentCycleStatus;
 import com.rentflow.rentcycle.mapper.RentCycleMapper;
 import com.rentflow.rentcycle.repository.RentCycleRepository;
+import com.rentflow.tenant.entity.Tenant;
+import com.rentflow.tenant.repository.TenantRepository;
+import com.rentflow.auth.entity.User;
+import com.rentflow.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +31,8 @@ public class RentCycleService {
     private final RentCycleRepository rentCycleRepository;
     private final RentCycleMapper rentCycleMapper;
     private final LeaseRepository leaseRepository;
+    private final TenantRepository tenantRepository;
+    private final UserRepository userRepository;
 
     public List<RentCycleResponse> generateCycles(UUID leaseId){
 
@@ -179,10 +185,72 @@ public class RentCycleService {
             LocalDate cycleStart,
             int dueDay) {
 
-        int validDay =
-                Math.min(dueDay, cycleStart.lengthOfMonth());
+        /*
+         * If the rent cycle starts on or before the
+         * payment due day, due date is in the same month.
+         *
+         * Example:
+         * cycleStart = September 1
+         * dueDay = 5
+         * dueDate = September 5
+         *
+         * If the cycle starts after the due day, the due
+         * date moves to the next month.
+         *
+         * Example:
+         * cycleStart = August 20
+         * dueDay = 5
+         * dueDate = September 5
+         */
 
-        return cycleStart.withDayOfMonth(validDay);
+        if (cycleStart.getDayOfMonth() <= dueDay) {
+
+            int validDay =
+                    Math.min(
+                            dueDay,
+                            cycleStart.lengthOfMonth()
+                    );
+
+            return cycleStart.withDayOfMonth(validDay);
+        }
+
+        LocalDate nextMonth =
+                cycleStart.plusMonths(1);
+
+        int validDay =
+                Math.min(
+                        dueDay,
+                        nextMonth.lengthOfMonth()
+                );
+
+        return nextMonth.withDayOfMonth(validDay);
+    }
+    @Transactional(readOnly = true)
+    public List<RentCycleResponse> getMyRentCycles(
+            String email) {
+
+        User user =
+                userRepository.findByEmail(email)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "User not found"
+                                ));
+
+        Tenant tenant =
+                tenantRepository
+                        .findByUserIdAndActiveTrue(user.getId())
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Tenant profile not found"
+                                ));
+
+        return rentCycleRepository
+                .findByLeaseTenantIdAndActiveTrue(
+                        tenant.getId()
+                )
+                .stream()
+                .map(rentCycleMapper::toResponse)
+                .toList();
     }
 
 }

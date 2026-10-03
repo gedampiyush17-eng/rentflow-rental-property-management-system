@@ -1,11 +1,13 @@
 package com.rentflow.payment.service;
 
 import com.rentflow.auth.entity.User;
+import com.rentflow.auth.enums.Role;
 import com.rentflow.auth.repository.UserRepository;
 import com.rentflow.common.exception.ResourceNotFoundException;
 import com.rentflow.payment.dto.PaymentConfirmationRequest;
-import com.rentflow.payment.dto.request.PaymentCreateRequest;
-import com.rentflow.payment.dto.response.PaymentResponse;
+import com.rentflow.payment.dto.PaymentCreateRequest;
+import com.rentflow.payment.dto.PaymentSimulationRequest;
+import com.rentflow.payment.dto.PaymentResponse;
 import com.rentflow.payment.entity.Payment;
 import com.rentflow.payment.enums.PaymentMethod;
 import com.rentflow.payment.enums.PaymentStatus;
@@ -36,9 +38,14 @@ public class PaymentService {
     private final UserRepository userRepository;
 
     /*
-     * Record and confirm a payment.
+     * =========================================================
+     * MANUAL PAYMENT
+     * =========================================================
      *
-     * Only OWNER / MANAGER should reach this operation.
+     * Used by OWNER / MANAGER when they have already verified
+     * a real cash/UPI payment.
+     *
+     * This payment is immediately CONFIRMED.
      */
     public PaymentResponse createPayment(
             PaymentCreateRequest request) {
@@ -58,82 +65,21 @@ public class PaymentService {
                                                 + request.getRentCycleId()
                                 ));
 
-        /*
-         * Payment cannot be recorded against a cycle
-         * that has already been fully paid.
-         */
-        if (rentCycle.getStatus()
-                == RentCycleStatus.PAID) {
+        validateRentCycleForPayment(rentCycle);
 
-            throw new IllegalStateException(
-                    "Rent cycle is already fully paid"
-            );
-        }
+        validatePaymentAmount(
+                request.getAmount(),
+                rentCycle.getBalanceDue()
+        );
 
-        BigDecimal balanceDue =
-                rentCycle.getBalanceDue();
+        validatePaymentMethod(
+                request.getPaymentMethod(),
+                request.getTransactionReference()
+        );
 
-        /*
-         * Payment cannot be greater than outstanding balance.
-         */
-        if (request.getAmount()
-                .compareTo(balanceDue) > 0) {
-
-            throw new IllegalArgumentException(
-                    "Payment amount cannot exceed "
-                            + "the outstanding balance of "
-                            + balanceDue
-            );
-        }
-
-        /*
-         * UPI payment should have a transaction reference.
-         */
-        if (request.getPaymentMethod()
-                == PaymentMethod.UPI
-                && (request.getTransactionReference()
-                == null
-                || request.getTransactionReference()
-                .isBlank())) {
-
-            throw new IllegalArgumentException(
-                    "Transaction reference is required "
-                            + "for UPI payment"
-            );
-        }
-
-        /*
-         * CASH should not reuse a UPI transaction reference.
-         */
-        if (request.getPaymentMethod()
-                == PaymentMethod.CASH
-                && request.getTransactionReference()
-                != null
-                && !request.getTransactionReference()
-                .isBlank()) {
-
-            throw new IllegalArgumentException(
-                    "Transaction reference should be empty "
-                            + "for cash payment"
-            );
-        }
-
-        /*
-         * Prevent duplicate UPI transaction references.
-         */
-        if (request.getTransactionReference()
-                != null
-                && !request.getTransactionReference()
-                .isBlank()
-                && paymentRepository
-                .existsByTransactionReference(
-                        request.getTransactionReference()
-                )) {
-
-            throw new IllegalArgumentException(
-                    "Transaction reference already exists"
-            );
-        }
+        validateTransactionReference(
+                request.getTransactionReference()
+        );
 
         Payment payment =
                 paymentMapper.toEntity(request);
@@ -141,16 +87,15 @@ public class PaymentService {
         payment.setRentCycle(rentCycle);
 
         /*
-         * Phase 1 uses trusted manual confirmation.
-         *
-         * Owner/Manager records the payment only after
-         * verifying the cash/UPI payment.
+         * Manual Owner/Manager payment is already verified.
          */
         payment.setPaymentStatus(
                 PaymentStatus.CONFIRMED
         );
 
-        payment.setConfirmedBy(currentUser);
+        payment.setConfirmedBy(
+                currentUser
+        );
 
         payment.setConfirmedAt(
                 LocalDateTime.now()
@@ -160,46 +105,148 @@ public class PaymentService {
                 paymentRepository.save(payment);
 
         /*
-         * Update RentCycle amounts.
+         * Update RentCycle.
+         *
+         * Partial payments are supported.
          */
-        BigDecimal newAmountPaid =
-                rentCycle.getAmountPaid()
-                        .add(request.getAmount());
+        updateRentCycleAfterPayment(
+                rentCycle,
+                request.getAmount()
+        );
 
-        BigDecimal newBalance =
-                rentCycle.getAmountDue()
-                        .subtract(newAmountPaid);
-
-        rentCycle.setAmountPaid(newAmountPaid);
-
-        rentCycle.setBalanceDue(newBalance);
-
-        /*
-         * Determine the new RentCycle status.
-         */
-        if (newBalance.compareTo(BigDecimal.ZERO) == 0) {
-
-            rentCycle.setStatus(
-                    RentCycleStatus.PAID
-            );
-
-        } else {
-
-            rentCycle.setStatus(
-                    RentCycleStatus.PARTIALLY_PAID
-            );
-        }
-
-        rentCycleRepository.save(rentCycle);
-
-        return paymentMapper.toResponse(savedPayment);
+        return paymentMapper.toResponse(
+                savedPayment
+        );
     }
 
     /*
-     * Confirm an existing pending payment.
+     * =========================================================
+     * SIMULATED TENANT PAYMENT
+     * =========================================================
      *
-     * This method is useful if we later introduce a
-     * "Tenant says I have paid" workflow.
+     * This is our development/demo payment flow.
+     *
+     * Tenant clicks:
+     *
+     *      PAY ₹5000
+     *
+     * Backend:
+     *
+     *      1. Verifies tenant owns the rent cycle
+     *      2. Validates amount
+     *      3. Generates transaction reference
+     *      4. Creates PENDING payment
+     *
+     * IMPORTANT:
+     *
+     * This does NOT update the RentCycle yet.
+     *
+     * Owner must confirm it.
+     */
+    public PaymentResponse simulatePayment(
+            PaymentSimulationRequest request) {
+
+        User currentUser = getCurrentUser();
+
+        validateTenant(currentUser);
+
+        RentCycle rentCycle =
+                rentCycleRepository
+                        .findByIdAndActiveTrue(
+                                request.getRentCycleId()
+                        )
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Rent cycle not found with id: "
+                                                + request.getRentCycleId()
+                                ));
+
+        /*
+         * Make sure this rent cycle actually belongs
+         * to the currently logged-in tenant.
+         */
+        validateTenantOwnsRentCycle(
+                currentUser,
+                rentCycle
+        );
+
+        validateRentCycleForPayment(rentCycle);
+
+        /*
+         * Tenant can make a partial payment.
+         */
+        validatePaymentAmount(
+                request.getAmount(),
+                rentCycle.getBalanceDue()
+        );
+
+        /*
+         * Generate the transaction reference on the
+         * backend instead of trusting the tenant to provide it.
+         */
+        String transactionReference =
+                generateTransactionReference();
+
+        Payment payment =
+                new Payment();
+
+        payment.setAmount(
+                request.getAmount()
+        );
+
+        payment.setPaymentMethod(
+                PaymentMethod.UPI
+        );
+
+        /*
+         * Payment is NOT confirmed yet.
+         */
+        payment.setPaymentStatus(
+                PaymentStatus.PENDING
+        );
+
+        payment.setTransactionReference(
+                transactionReference
+        );
+
+        payment.setRentCycle(
+                rentCycle
+        );
+
+        payment.setRemarks(
+                "Simulated UPI payment - development mode"
+        );
+
+        Payment savedPayment =
+                paymentRepository.save(payment);
+
+        /*
+         * IMPORTANT:
+         *
+         * Do NOT update RentCycle here.
+         *
+         * It remains:
+         *
+         * PENDING
+         * or
+         * PARTIALLY_PAID
+         *
+         * until Owner confirms the payment.
+         */
+
+        return paymentMapper.toResponse(
+                savedPayment
+        );
+    }
+
+    /*
+     * =========================================================
+     * CONFIRM PAYMENT
+     * =========================================================
+     *
+     * Owner/Manager confirms a PENDING payment.
+     *
+     * Only after this operation do we update the RentCycle.
      */
     public PaymentResponse confirmPayment(
             UUID paymentId,
@@ -218,6 +265,9 @@ public class PaymentService {
                                                 + paymentId
                                 ));
 
+        /*
+         * Payment must still be pending.
+         */
         if (payment.getPaymentStatus()
                 == PaymentStatus.CONFIRMED) {
 
@@ -226,25 +276,52 @@ public class PaymentService {
             );
         }
 
-        if (request.getTransactionReference() != null
-                && !request.getTransactionReference()
-                .isBlank()) {
+        /*
+         * We only allow confirmation of pending payments.
+         */
+        if (payment.getPaymentStatus()
+                != PaymentStatus.PENDING) {
 
-            if (paymentRepository
-                    .existsByTransactionReference(
-                            request.getTransactionReference()
-                    )) {
-
-                throw new IllegalArgumentException(
-                        "Transaction reference already exists"
-                );
-            }
-
-            payment.setTransactionReference(
-                    request.getTransactionReference()
+            throw new IllegalStateException(
+                    "Only pending payments can be confirmed"
             );
         }
 
+        /*
+         * The transaction reference generated during
+         * simulated payment must match.
+         */
+        if (!payment.getTransactionReference()
+                .equals(
+                        request.getTransactionReference()
+                )) {
+
+            throw new IllegalArgumentException(
+                    "Transaction reference does not match"
+            );
+        }
+
+        /*
+         * Payment must still fit within the current
+         * outstanding balance.
+         */
+        RentCycle rentCycle =
+                payment.getRentCycle();
+
+        if (payment.getAmount()
+                .compareTo(
+                        rentCycle.getBalanceDue()
+                ) > 0) {
+
+            throw new IllegalStateException(
+                    "Payment amount exceeds the "
+                            + "current outstanding balance"
+            );
+        }
+
+        /*
+         * Confirm payment.
+         */
         payment.setRemarks(
                 request.getRemarks()
         );
@@ -262,7 +339,19 @@ public class PaymentService {
         );
 
         Payment confirmedPayment =
-                paymentRepository.save(payment);
+                paymentRepository.save(
+                        payment
+                );
+
+        /*
+         * NOW update RentCycle.
+         *
+         * This preserves partial payment logic.
+         */
+        updateRentCycleAfterPayment(
+                rentCycle,
+                payment.getAmount()
+        );
 
         return paymentMapper.toResponse(
                 confirmedPayment
@@ -270,7 +359,9 @@ public class PaymentService {
     }
 
     /*
-     * Get all active payments.
+     * =========================================================
+     * GET ALL PAYMENTS
+     * =========================================================
      */
     @Transactional(readOnly = true)
     public List<PaymentResponse> getAllPayments() {
@@ -283,7 +374,9 @@ public class PaymentService {
     }
 
     /*
-     * Get payment by ID.
+     * =========================================================
+     * GET PAYMENT BY ID
+     * =========================================================
      */
     @Transactional(readOnly = true)
     public PaymentResponse getPaymentById(
@@ -298,18 +391,24 @@ public class PaymentService {
                                                 + id
                                 ));
 
-        return paymentMapper.toResponse(payment);
+        return paymentMapper.toResponse(
+                payment
+        );
     }
 
     /*
-     * Get all payments for a rent cycle.
+     * =========================================================
+     * GET PAYMENTS BY RENT CYCLE
+     * =========================================================
      */
     @Transactional(readOnly = true)
     public List<PaymentResponse> getPaymentsByRentCycle(
             UUID rentCycleId) {
 
         if (!rentCycleRepository
-                .findByIdAndActiveTrue(rentCycleId)
+                .findByIdAndActiveTrue(
+                        rentCycleId
+                )
                 .isPresent()) {
 
             throw new ResourceNotFoundException(
@@ -328,7 +427,278 @@ public class PaymentService {
     }
 
     /*
-     * Get currently authenticated User.
+     * =========================================================
+     * UPDATE RENT CYCLE AFTER CONFIRMED PAYMENT
+     * =========================================================
+     *
+     * This is where partial payment is handled.
+     */
+    private void updateRentCycleAfterPayment(
+            RentCycle rentCycle,
+            BigDecimal paymentAmount) {
+
+        BigDecimal newAmountPaid =
+                rentCycle.getAmountPaid()
+                        .add(paymentAmount);
+
+        BigDecimal newBalance =
+                rentCycle.getAmountDue()
+                        .subtract(newAmountPaid);
+
+        /*
+         * Prevent negative balance.
+         */
+        if (newBalance.compareTo(
+                BigDecimal.ZERO
+        ) < 0) {
+
+            throw new IllegalStateException(
+                    "Payment would make rent balance negative"
+            );
+        }
+
+        rentCycle.setAmountPaid(
+                newAmountPaid
+        );
+
+        rentCycle.setBalanceDue(
+                newBalance
+        );
+
+        /*
+         * Full payment.
+         */
+        if (newBalance.compareTo(
+                BigDecimal.ZERO
+        ) == 0) {
+
+            rentCycle.setStatus(
+                    RentCycleStatus.PAID
+            );
+
+        }
+        /*
+         * Partial payment.
+         */
+        else {
+
+            rentCycle.setStatus(
+                    RentCycleStatus.PARTIALLY_PAID
+            );
+        }
+
+        rentCycleRepository.save(
+                rentCycle
+        );
+    }
+
+    /*
+     * =========================================================
+     * VALIDATE RENT CYCLE
+     * =========================================================
+     */
+    private void validateRentCycleForPayment(
+            RentCycle rentCycle) {
+
+        if (rentCycle.getStatus()
+                == RentCycleStatus.PAID) {
+
+            throw new IllegalStateException(
+                    "Rent cycle is already fully paid"
+            );
+        }
+
+        if (rentCycle.getBalanceDue()
+                .compareTo(BigDecimal.ZERO) <= 0) {
+
+            throw new IllegalStateException(
+                    "Rent cycle has no outstanding balance"
+            );
+        }
+    }
+
+    /*
+     * =========================================================
+     * VALIDATE PAYMENT AMOUNT
+     * =========================================================
+     *
+     * Allows partial payment.
+     */
+    private void validatePaymentAmount(
+            BigDecimal amount,
+            BigDecimal balanceDue) {
+
+        if (amount == null
+                || amount.compareTo(
+                BigDecimal.ZERO
+        ) <= 0) {
+
+            throw new IllegalArgumentException(
+                    "Payment amount must be greater than zero"
+            );
+        }
+
+        if (amount.compareTo(
+                balanceDue
+        ) > 0) {
+
+            throw new IllegalArgumentException(
+                    "Payment amount cannot exceed "
+                            + "the outstanding balance of "
+                            + balanceDue
+            );
+        }
+    }
+
+    /*
+     * =========================================================
+     * VALIDATE PAYMENT METHOD
+     * =========================================================
+     */
+    private void validatePaymentMethod(
+            PaymentMethod paymentMethod,
+            String transactionReference) {
+
+        /*
+         * UPI requires a transaction reference.
+         */
+        if (paymentMethod
+                == PaymentMethod.UPI
+                && (transactionReference == null
+                || transactionReference.isBlank())) {
+
+            throw new IllegalArgumentException(
+                    "Transaction reference is required "
+                            + "for UPI payment"
+            );
+        }
+
+        /*
+         * Cash should not contain a UPI reference.
+         */
+        if (paymentMethod
+                == PaymentMethod.CASH
+                && transactionReference != null
+                && !transactionReference.isBlank()) {
+
+            throw new IllegalArgumentException(
+                    "Transaction reference should be empty "
+                            + "for cash payment"
+            );
+        }
+    }
+
+    /*
+     * =========================================================
+     * TRANSACTION REFERENCE VALIDATION
+     * =========================================================
+     */
+    private void validateTransactionReference(
+            String transactionReference) {
+
+        if (transactionReference != null
+                && !transactionReference.isBlank()
+                && paymentRepository
+                .existsByTransactionReference(
+                        transactionReference
+                )) {
+
+            throw new IllegalArgumentException(
+                    "Transaction reference already exists"
+            );
+        }
+    }
+
+    /*
+     * =========================================================
+     * GENERATE SIMULATED TRANSACTION ID
+     * =========================================================
+     */
+    private String generateTransactionReference() {
+
+        String transactionReference;
+
+        do {
+
+            transactionReference =
+                    "RF-UPI-"
+                            + System.currentTimeMillis()
+                            + "-"
+                            + UUID.randomUUID()
+                            .toString()
+                            .substring(0, 8)
+                            .toUpperCase();
+
+        } while (
+                paymentRepository
+                        .existsByTransactionReference(
+                                transactionReference
+                        )
+        );
+
+        return transactionReference;
+    }
+
+    /*
+     * =========================================================
+     * VALIDATE CURRENT USER IS TENANT
+     * =========================================================
+     */
+    private void validateTenant(
+            User user) {
+
+        if (user.getRole() != Role.TENANT) {
+
+            throw new SecurityException(
+                    "Only tenants can simulate a payment"
+            );
+        }
+    }
+
+    /*
+     * =========================================================
+     * VALIDATE TENANT OWNS RENT CYCLE
+     * =========================================================
+     *
+     * Prevents James from paying another tenant's rent cycle.
+     */
+    private void validateTenantOwnsRentCycle(
+            User user,
+            RentCycle rentCycle) {
+
+        if (rentCycle.getLease() == null
+                || rentCycle.getLease().getTenant() == null
+                || rentCycle.getLease()
+                .getTenant()
+                .getUser() == null) {
+
+            throw new IllegalStateException(
+                    "Rent cycle is not properly linked "
+                            + "to a tenant"
+            );
+        }
+
+        UUID tenantUserId =
+                rentCycle.getLease()
+                        .getTenant()
+                        .getUser()
+                        .getId();
+
+        if (!tenantUserId.equals(
+                user.getId()
+        )) {
+
+            throw new SecurityException(
+                    "You are not authorized to pay "
+                            + "this rent cycle"
+            );
+        }
+    }
+
+    /*
+     * =========================================================
+     * GET CURRENT USER
+     * =========================================================
      */
     private User getCurrentUser() {
 
@@ -357,17 +727,18 @@ public class PaymentService {
     }
 
     /*
-     * Only OWNER and MANAGER can record/confirm
-     * payments according to Phase 1 rules.
+     * =========================================================
+     * VALIDATE PAYMENT RECORDER
+     * =========================================================
+     *
+     * Only OWNER and MANAGER can confirm payments
+     * or manually record verified payments.
      */
     private void validatePaymentRecorder(
             User user) {
 
-        String role =
-                user.getRole().name();
-
-        if (!role.equals("OWNER")
-                && !role.equals("MANAGER")) {
+        if (user.getRole() != Role.OWNER
+                && user.getRole() != Role.ADMIN) {
 
             throw new SecurityException(
                     "Only Owner or Property Manager "

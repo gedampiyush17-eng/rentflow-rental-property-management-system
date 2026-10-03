@@ -16,10 +16,10 @@ public interface ReceiptMapper {
             source = "payment.transactionReference")
 
     @Mapping(target = "rentCycleId", source = "payment.rentCycle.id")
-    @Mapping(target = "periodMonth",
-            source = "payment.rentCycle.periodMonth")
-    @Mapping(target = "periodYear",
-            source = "payment.rentCycle.periodYear")
+    @Mapping(target = "periodStart",
+            source = "payment.rentCycle.periodStart")
+    @Mapping(target = "periodEnd",
+            source = "payment.rentCycle.periodEnd")
 
     @Mapping(target = "tenantId",
             source = "payment.rentCycle.lease.tenant.id")

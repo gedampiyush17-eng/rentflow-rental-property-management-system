@@ -1,0 +1,447 @@
+.rent-cycles-page {
+  padding: 32px;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.rent-cycles-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.rent-cycles-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #172033;
+}
+
+.rent-cycles-header p {
+  margin: 7px 0 0;
+  color: #718096;
+  font-size: 14px;
+}
+
+.rent-cycles-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  color: #718096;
+  font-size: 15px;
+}
+
+.rent-cycles-error {
+  background: #fff5f5;
+  color: #c53030;
+  border: 1px solid #fed7d7;
+  padding: 14px 18px;
+  border-radius: 10px;
+  margin-bottom: 22px;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.rent-cycles-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.rent-cycle-stat-card {
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 2px 8px rgba(20, 40, 80, 0.04);
+}
+
+.rent-cycle-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  background: #eef5ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.rent-cycle-stat-icon.pending {
+  background: #fff7ed;
+  color: #ea580c;
+}
+
+.rent-cycle-stat-icon.partial {
+  background: #fffbea;
+  color: #ca8a04;
+}
+
+.rent-cycle-stat-icon.paid {
+  background: #ecfdf3;
+  color: #15803d;
+}
+
+.rent-cycle-stat-icon.outstanding {
+  background: #fff1f2;
+  color: #dc2626;
+}
+
+.rent-cycle-stat-card span {
+  display: block;
+  color: #718096;
+  font-size: 12px;
+  margin-bottom: 5px;
+  white-space: nowrap;
+}
+
+.rent-cycle-stat-card strong {
+  display: block;
+  color: #172033;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* =========================
+   MAIN CARD
+========================= */
+
+.rent-cycles-card {
+  background: #ffffff;
+  border: 1px solid #e8edf5;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(20, 40, 80, 0.04);
+  overflow: hidden;
+}
+
+.rent-cycles-card-header {
+  padding: 22px 24px;
+  border-bottom: 1px solid #edf1f7;
+}
+
+.rent-cycles-card-header h2 {
+  margin: 0;
+  color: #172033;
+  font-size: 18px;
+  font-weight: 650;
+}
+
+.rent-cycles-card-header p {
+  margin: 6px 0 0;
+  color: #718096;
+  font-size: 13px;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.rent-cycles-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.rent-cycles-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+}
+
+.rent-cycles-table th {
+  background: #f8fafc;
+  color: #718096;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 15px 18px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.rent-cycles-table td {
+  padding: 18px;
+  border-top: 1px solid #edf1f7;
+  vertical-align: middle;
+}
+
+.rent-cycles-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.rent-cycles-table tbody tr:hover {
+  background: #f8fbff;
+}
+
+/* =========================
+   CYCLE
+========================= */
+
+.rent-cycle-id {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.rent-cycle-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #eef5ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  flex-shrink: 0;
+}
+
+.rent-cycle-id strong {
+  display: block;
+  color: #1f2937;
+  font-size: 12px;
+}
+
+.rent-cycle-id span {
+  display: block;
+  color: #8a94a6;
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+/* =========================
+   TENANT
+========================= */
+
+.rent-cycle-tenant {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 170px;
+}
+
+.rent-cycle-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e8f0ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.rent-cycle-tenant strong {
+  display: block;
+  color: #273142;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.rent-cycle-tenant span {
+  display: block;
+  color: #8a94a6;
+  font-size: 10px;
+  margin-top: 3px;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =========================
+   UNIT
+========================= */
+
+.rent-cycle-unit {
+  display: inline-block;
+  padding: 7px 11px;
+  background: #f1f5f9;
+  border-radius: 7px;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* =========================
+   PERIOD
+========================= */
+
+.rent-cycle-period {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.rent-cycle-period span {
+  color: #4a5568;
+  font-size: 11px;
+}
+
+.rent-cycle-arrow {
+  color: #9aa4b2 !important;
+}
+
+/* =========================
+   DUE DATE
+========================= */
+
+.rent-cycle-due-date {
+  color: #4a5568;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* =========================
+   MONEY
+========================= */
+
+.rent-cycle-amount {
+  color: #172033;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.rent-cycle-paid {
+  color: #15803d;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rent-cycle-balance {
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.rent-cycle-balance.due {
+  color: #dc2626;
+}
+
+.rent-cycle-balance.clear {
+  color: #15803d;
+}
+
+/* =========================
+   STATUS
+========================= */
+
+.rent-cycle-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 11px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rent-cycle-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.rent-cycle-status.pending {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.rent-cycle-status.partially_paid {
+  background: #fffbea;
+  color: #a16207;
+}
+
+.rent-cycle-status.paid {
+  background: #ecfdf3;
+  color: #15803d;
+}
+
+.rent-cycle-status.overdue {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.rent-cycles-empty {
+  text-align: center;
+  padding: 70px 20px;
+}
+
+.rent-cycles-empty-icon {
+  width: 55px;
+  height: 55px;
+  margin: 0 auto 15px;
+  border-radius: 14px;
+  background: #eef5ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.rent-cycles-empty h3 {
+  margin: 0;
+  color: #273142;
+  font-size: 17px;
+}
+
+.rent-cycles-empty p {
+  margin-top: 7px;
+  color: #8a94a6;
+  font-size: 13px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+  .rent-cycles-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .rent-cycles-page {
+    padding: 20px;
+  }
+
+  .rent-cycles-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rent-cycles-header h1 {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 520px) {
+  .rent-cycles-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .rent-cycles-card {
+    border-radius: 12px;
+  }
+}

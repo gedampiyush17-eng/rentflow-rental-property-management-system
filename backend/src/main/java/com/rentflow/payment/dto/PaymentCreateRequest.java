@@ -1,4 +1,4 @@
-package com.rentflow.payment.dto.request;
+package com.rentflow.payment.dto;
 
 import com.rentflow.payment.enums.PaymentMethod;
 import jakarta.validation.constraints.DecimalMin;

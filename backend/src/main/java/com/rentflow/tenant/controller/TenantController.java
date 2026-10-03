@@ -1,6 +1,6 @@
 package com.rentflow.tenant.controller;
 
-import com.rentflow.tenant.dto.request.TenantCreateRequest;
+import com.rentflow.tenant.dto.TenantCreateRequest;
 import com.rentflow.tenant.dto.request.TenantUpdateRequest;
 import com.rentflow.tenant.dto.response.TenantResponse;
 import com.rentflow.tenant.service.TenantService;

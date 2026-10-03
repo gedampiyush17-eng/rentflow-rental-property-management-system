@@ -1,16 +1,19 @@
 package com.rentflow.tenant.service;
 
 import com.rentflow.auth.entity.User;
+import com.rentflow.auth.enums.Role;
 import com.rentflow.auth.repository.UserRepository;
 import com.rentflow.common.exception.ResourceNotFoundException;
-import com.rentflow.tenant.dto.request.TenantCreateRequest;
+import com.rentflow.tenant.dto.TenantCreateRequest;
 import com.rentflow.tenant.dto.request.TenantUpdateRequest;
 import com.rentflow.tenant.dto.response.TenantResponse;
 import com.rentflow.tenant.entity.Tenant;
 import com.rentflow.tenant.mapper.TenantMapper;
 import com.rentflow.tenant.repository.TenantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +25,9 @@ public class TenantService {
     private final TenantRepository tenantRepository;
     private final TenantMapper tenantMapper;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public TenantResponse createTenant(
             TenantCreateRequest request) {
 
@@ -49,25 +54,46 @@ public class TenantService {
             );
         }
 
-        if (tenantRepository.existsByUserId(
-                request.getUserId())) {
-
+        if (userRepository.existsByEmail(request.getEmail())) {
             throw new IllegalArgumentException(
-                    "User is already associated with a tenant"
+                    "User email already exists"
             );
         }
 
-        User user = userRepository
-                .findById(request.getUserId())
-                .orElseThrow(() ->
-                        new ResourceNotFoundException(
-                                "User not found with id: "
-                                        + request.getUserId()
-                        ));
+        if (userRepository.existsByPhoneNumber(
+                request.getPhoneNumber())) {
 
-        Tenant tenant = tenantMapper.toEntity(request);
+            throw new IllegalArgumentException(
+                    "User phone number already exists"
+            );
+        }
 
-        tenant.setUser(user);
+        // Create the authentication account
+        User user = new User();
+
+        user.setFullName(
+                request.getFirstName() + " "
+                        + request.getLastName()
+        );
+
+        user.setEmail(request.getEmail());
+
+        user.setPassword(
+                passwordEncoder.encode(request.getPassword())
+        );
+
+        user.setPhoneNumber(request.getPhoneNumber());
+
+        user.setRole(Role.TENANT);
+
+        User savedUser =
+                userRepository.save(user);
+
+        // Create the Tenant profile
+        Tenant tenant =
+                tenantMapper.toEntity(request);
+
+        tenant.setUser(savedUser);
 
         Tenant savedTenant =
                 tenantRepository.save(tenant);

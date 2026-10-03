@@ -24,4 +24,6 @@ public interface RentCycleRepository extends JpaRepository<RentCycle, UUID> {
     boolean existsByLeaseIdAndPeriodStartAndPeriodEnd(UUID leaseId, LocalDate periodStart, LocalDate periodEnd);
 
     long countByLeaseIdAndStatusAndActiveTrue(UUID leaseId, RentCycleStatus status);
+
+    List<RentCycle> findByLeaseTenantIdAndActiveTrue(UUID tenantId);
 }

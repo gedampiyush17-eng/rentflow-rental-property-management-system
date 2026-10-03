@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -71,5 +72,17 @@ public class RentCycleController {
             @PathVariable UUID id) {
 
         rentCycleService.deleteCycle(id);
+    }
+
+    @Operation(
+            summary = "Get my rent cycles"
+    )
+    @GetMapping("/my")
+    public List<RentCycleResponse> getMyRentCycles(
+            Authentication authentication) {
+
+        return rentCycleService.getMyRentCycles(
+                authentication.getName()
+        );
     }
 }

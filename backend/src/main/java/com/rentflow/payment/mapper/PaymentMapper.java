@@ -1,7 +1,7 @@
 package com.rentflow.payment.mapper;
 
-import com.rentflow.payment.dto.request.PaymentCreateRequest;
-import com.rentflow.payment.dto.response.PaymentResponse;
+import com.rentflow.payment.dto.PaymentCreateRequest;
+import com.rentflow.payment.dto.PaymentResponse;
 import com.rentflow.payment.entity.Payment;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
