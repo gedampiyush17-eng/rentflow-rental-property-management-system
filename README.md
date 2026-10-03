@@ -6,144 +6,70 @@ The system provides separate experiences for **Owners** and **Tenants**, with JW
 
 ---
 
-## 🚀 Project Overview
+## 🛠️ Tech Stack
 
-Managing rental properties manually can become difficult when dealing with multiple properties, tenants, leases, rent due dates, payments, and receipts.
+### Backend
 
-RentFlow simplifies this workflow by providing a centralized system where:
+| Technology | Purpose |
+|---|---|
+| **Java 17** | Backend programming language |
+| **Spring Boot** | Backend application framework |
+| **Spring Web** | REST API development |
+| **Spring Data JPA** | Database interaction |
+| **Hibernate** | ORM |
+| **Spring Security** | Authentication & authorization |
+| **JWT** | Stateless authentication |
+| **BCrypt** | Password hashing |
+| **PostgreSQL** | Relational database |
+| **Jakarta Validation** | Request validation |
+| **Lombok** | Boilerplate reduction |
+| **MapStruct** | DTO ↔ Entity mapping |
+| **Swagger / OpenAPI** | API documentation |
+| **Maven** | Dependency management & build |
 
-- Owners can manage properties and rental units.
-- Owners can manage tenants and leases.
-- Rent cycles can be generated from active leases.
-- Tenants can view their rent information.
-- Tenants can make simulated digital payments.
-- Owners can confirm pending payments.
-- Partial payments are supported.
-- Payment status is automatically reflected in rent cycles.
-- Receipts can be generated and viewed as PDF documents.
+### Frontend
 
----
+| Technology | Purpose |
+|---|---|
+| **React** | Frontend UI |
+| **Vite** | Frontend build tool |
+| **JavaScript (ES6+)** | Frontend programming |
+| **React Router** | Client-side routing |
+| **Axios** | REST API communication |
+| **HTML5** | UI structure |
+| **CSS3** | Styling & responsive UI |
 
-## ✨ Key Features
+### Database & Development Tools
 
-### 🔐 Authentication
-
-- JWT-based authentication
-- Secure password handling using BCrypt
-- Role-based application flow
-- Separate Owner and Tenant dashboards
-- Protected application routes
-
-### 👨‍💼 Owner Module
-
-Owners can manage the complete rental lifecycle.
-
-#### Dashboard
-- Overview of rental management information
-- Centralized navigation for property management
-
-#### Properties
-- View rental properties
-- Property information including:
-  - Property name
-  - Property type
-  - Address
-  - City
-  - State
-  - Country
-
-#### Units
-- View all rental units
-- Add rental units
-- View individual unit details
-- Track:
-  - Unit number
-  - Monthly rent
-  - Security deposit
-  - Area
-  - Occupancy status
-  - Notes
-
-#### Tenants
-- View tenants
-- Add new tenants
-- View tenant details
-- View tenant rental information
-
-#### Leases
-- Create and manage leases
-- Associate tenants with rental units
-- Configure:
-  - Lease start date
-  - Lease end date
-  - Monthly rent
-  - Security deposit
-  - Payment due day
-- Lease lifecycle management
-
-#### Rent Cycles
-- Generate rent cycles from leases
-- Track:
-  - Period start
-  - Period end
-  - Due date
-  - Amount due
-  - Amount paid
-  - Balance due
-  - Payment status
-
-#### Payments
-- View payment history
-- View payment details
-- Record payment information
-- Confirm pending tenant payments
-- Support payment methods such as UPI/cash
-- Track transaction references
-- Support partial payments
-
-#### Receipts
-- Generate receipts for confirmed payments
-- Prevent duplicate receipts
-- View receipt information
-- Open generated receipt as a PDF
+| Tool | Purpose |
+|---|---|
+| **PostgreSQL** | Application database |
+| **pgAdmin** | Database management |
+| **Postman** | API testing |
+| **Swagger UI** | API testing & documentation |
+| **IntelliJ IDEA** | Backend development |
+| **VS Code** | Frontend development |
+| **Git** | Version control |
+| **GitHub** | Source code hosting |
 
 ---
 
-## 👨‍💻 Tenant Module
+## 🏗️ Architecture
 
-Tenants have a simplified dashboard focused on their rental obligations.
+RentFlow follows a **feature-based layered architecture** on the backend and a component/page-based architecture on the frontend.
 
-### Tenant Dashboard
-
-Tenants can view:
-
-- Active lease information
-- Current rent cycle
-- Monthly rent
-- Amount paid
-- Remaining balance
-- Payment status
-- Due date
-
-### 💳 Payment Flow
-
-The project currently uses a simulated payment workflow for development/demo purposes.
+### Backend
 
 ```text
-Tenant
-   ↓
-View Rent Cycle
-   ↓
-Pay Rent
-   ↓
-Enter Payment Amount
-   ↓
-Simulated Payment
-   ↓
-Payment created as PENDING
-   ↓
-Owner confirms payment
-   ↓
-Rent Cycle updated
-   ↓
-Payment becomes CONFIRMED
+com.rentflow
+│
+├── auth
+├── common
+├── property
+├── unit
+├── tenant
+├── lease
+├── payment
+├── rentcycle
+├── receipt
+└── remainder
