@@ -110,7 +110,10 @@ public class SecurityConfig {
                 new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                List.of("http://localhost:5173")
+                List.of(
+                        "http://localhost:5173",
+                        "https://rentflow-rental-property-management.vercel.app"
+                )
         );
 
         configuration.setAllowedMethods(
