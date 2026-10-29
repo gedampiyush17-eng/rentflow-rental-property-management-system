@@ -1,8 +1,10 @@
+
 import {
   BrowserRouter,
   Routes,
   Route,
-  Navigate
+  Navigate,
+  useNavigate
 } from "react-router-dom";
 
 import { useState } from "react";
@@ -32,6 +34,8 @@ import OwnerLayout from "./layouts/OwnerLayout";
 
 function Login() {
 
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -51,19 +55,25 @@ function Login() {
         }
       );
 
+
       localStorage.setItem(
         "token",
         response.data.token
       );
 
+
       const role = getRole();
+
 
       setMessage("Login successful!");
 
-      window.location.href =
+
+      navigate(
         role === "TENANT"
           ? "/tenant"
-          : "/owner";
+          : "/owner"
+      );
+
 
     } catch (error) {
 
@@ -208,7 +218,6 @@ function App() {
 
         <Route element={<OwnerLayout />}>
 
-
           <Route
             path="/owner"
             element={
@@ -299,7 +308,6 @@ function App() {
               <Receipts />
             }
           />
-
 
         </Route>
 
